@@ -1,5 +1,5 @@
-name: 'Setup Neos Plugin Build Environment'
-description: 'Install .NET and Neos'
+name: Setup Neos Plugin Build Environment
+description: Install .NET and Neos
 runs:
   using: "composite"
   steps:
@@ -26,6 +26,7 @@ runs:
     - name: install p7zip
       if: steps.cache.outputs.cache-hit != 'true'
       run: sudo apt-get install -y p7zip-full
+      shell: bash
     - name: download Neos
       if: steps.cache.outputs.cache-hit != 'true'
       run: |
