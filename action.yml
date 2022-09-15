@@ -1,0 +1,37 @@
+name: 'Setup Neos Plugin Build Environment'
+description: 'Install .NET and Neos'
+runs:
+  using: "composite"
+  steps:
+    - name: get latest Neos version
+      run: |
+        REMOTE_NEOS_VERSION="$(curl -fs https://cloudxstorage.blob.core.windows.net/install/Pro/Public)"
+        echo "Remote Neos version is: \"$REMOTE_NEOS_VERSION\""
+        if [ "$REMOTE_NEOS_VERSION" = "" ]; then
+          echo "REMOTE_NEOS_VERSION is empty"
+          exit 1
+        fi
+        echo "REMOTE_NEOS_VERSION=$REMOTE_NEOS_VERSION" >> $GITHUB_ENV
+      shell: bash
+    - name: setup Neos install cache
+      id: cache
+      uses: actions/cache@v3
+      with:
+        path: neos_install/
+        key: ${{ env.REMOTE_NEOS_VERSION }}
+    - name: setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '6.0.x'
+    - name: install p7zip
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: sudo apt-get install -y p7zip-full
+    - name: download Neos
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: |
+        mkdir neos_install
+        cd neos_install
+        curl -fs "https://assets.neos.com/install/Pro/Data/${{ env.REMOTE_NEOS_VERSION }}.7z" -o neos.7z
+        7za x neos.7z
+        rm neos.7z
+      shell: bash
