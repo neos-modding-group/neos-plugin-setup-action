@@ -30,3 +30,5 @@ jobs:
       - name: build
         run: dotnet build ./NeosModLoader.sln --configuration Release
 ```
+
+This can also be used for building mods! You just need to get the latest NeosModLoader.dll to build against. I have [a project demonstrating this](https://github.com/zkxs/NeosDesktopToolShortcutRemapper/blob/master/.github/workflows/build.yml).
