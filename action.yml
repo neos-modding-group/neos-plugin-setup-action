@@ -27,6 +27,10 @@ runs:
       if: steps.cache.outputs.cache-hit != 'true'
       run: sudo apt-get install -y p7zip-full
       shell: bash
+    - name: install refasmer
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: dotnet tool install -g JetBrains.Refasmer.CliTool
+      shell: bash
     - name: download Neos
       if: steps.cache.outputs.cache-hit != 'true'
       run: |
@@ -36,3 +40,13 @@ runs:
         7za x neos.7z
         rm neos.7z
       shell: bash
+    - name: prune
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: find . -type f -not -name '*.dll' -and -not -name '*.pdb' -delete
+      shell: bash
+      working-directory: neos_install
+    - name: hollow
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: refasmer -wgmc '**/*.dll'
+      shell: bash
+      working-directory: neos_install
