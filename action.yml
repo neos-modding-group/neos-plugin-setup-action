@@ -18,7 +18,7 @@ runs:
       uses: actions/cache@v3
       with:
         path: neos_install/
-        key: ${{ env.REMOTE_NEOS_VERSION }}
+        key: neos_install_${{ env.REMOTE_NEOS_VERSION }}
     - name: setup .NET
       uses: actions/setup-dotnet@v2
       with:
