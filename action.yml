@@ -20,7 +20,7 @@ runs:
         path: neos_install/
         key: neos_install_${{ env.REMOTE_NEOS_VERSION }}
     - name: setup .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '6.0.x'
     - name: install p7zip
